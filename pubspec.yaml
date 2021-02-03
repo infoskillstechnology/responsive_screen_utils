@@ -1,0 +1,17 @@
+name: responsive_screen_utils
+description: A libary for create dynamic width and height, font size auto scalling
+version: 0.0.1
+homepage: https://github.com/infoskillstechnology/responsive_screen_utils.git
+
+environment:
+  sdk: '>=2.12.0-29.10.beta <3.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
