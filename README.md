@@ -4,7 +4,7 @@
 
 *Note*: responsive_screen_utils plugin is still under development, and some APIs might not be available yet.
 
-[github](https://github.com/infoskillstechnology/responsive_screen_utils.git)
+[Github Link](https://github.com/infoskillstechnology/responsive_screen_utils.git)
 
 [CHANGELOG](https://github.com/OpenFlutter/flutter_screenutil/blob/master/CHANGELOG.md)
 
@@ -60,12 +60,12 @@ class MyApp extends StatelessWidget {
 #### Pass the dp size of the design draft
 
 ```dart
-    ResponsiveScreenUtil().setWidth(540)  (dart sdk>=2.6 : 540.w) //Adapted to screen width
-    ResponsiveScreenUtil().setHeight(200) (dart sdk>=2.6 : 200.h) //Adapted to screen height , under normal circumstances, the height still uses x.w
-    ResponsiveScreenUtil().radius(200) (dart sdk>=2.6 : 200.r)    //Adapt according to the smaller of width or height
-    ResponsiveScreenUtil().setSp(24)      (dart sdk>=2.6 : 24.sp) //Adapter font
-    ResponsiveScreenUtil().setSp(24, allowFontScalingSelf: true)  (dart sdk>=2.6 : 24.ssp) //Adapter font(fonts will scale to respect Text Size accessibility settings)
-    ResponsiveScreenUtil().setSp(24, allowFontScalingSelf: false) (dart sdk>=2.6 : 24.nsp) //Adapter font(fonts will not scale to respect Text Size accessibility settings)
+    ResponsiveScreenUtil().setWidth(540.0)  (dart sdk>=2.6 : 540.w) //Adapted to screen width
+    ResponsiveScreenUtil().setHeight(200.0) (dart sdk>=2.6 : 200.h) //Adapted to screen height , under normal circumstances, the height still uses x.w
+    ResponsiveScreenUtil().radius(200.0) (dart sdk>=2.6 : 200.r)    //Adapt according to the smaller of width or height
+    ResponsiveScreenUtil().setSp(24.0)      (dart sdk>=2.6 : 24.sp) //Adapter font
+    ResponsiveScreenUtil().setSp(24.0, allowFontScalingSelf: true)  (dart sdk>=2.6 : 24.ssp) //Adapter font(fonts will scale to respect Text Size accessibility settings)
+    ResponsiveScreenUtil().setSp(24.0, allowFontScalingSelf: false) (dart sdk>=2.6 : 24.nsp) //Adapter font(fonts will not scale to respect Text Size accessibility settings)
 
     ResponsiveScreenUtil().pixelRatio       //Device pixel density
     ResponsiveScreenUtil().screenWidth   (dart sdk>=2.6 : 1.sw)    //Device width
@@ -96,8 +96,8 @@ example:
 instead of :
 ```dart
 Container(
-width: ResponsiveScreenUtil().setWidth(50),
-height:ResponsiveScreenUtil().setHeight(200),
+width: ResponsiveScreenUtil().setWidth(50.0),
+height:ResponsiveScreenUtil().setHeight(200.0),
 )
 ```
 you can use it like this:
@@ -121,21 +121,21 @@ Generally speaking, 50.w!=50.h.
 ///If you want to display a square:
 ///The UI may show a rectangle:
 Container(
-           width: 375.w,
-           height: 375.h,
+           width: 375.0.w,
+           height: 375.0.h,
             ),
             
 ////If you want to display a square:
 Container(
-           width: 300.w,
-           height: 300.w,
+           width: 300.0.w,
+           height: 300.0.w,
             ),
 
 or
 
 Container(
-           width: 300.r,
-           height: 300.r,
+           width: 300.0.r,
+           height: 300.0.r,
             ),
 ```
 
