@@ -3,7 +3,7 @@ import 'package:responsive_screen_utils/responsive_screen_utils.dart';
 
 
 class ResponsiveScreenUtilInit extends StatelessWidget {
-  /// A helper widget that initializes [ScreenUtil]
+  /// A helper widget that initializes [ResponsiveScreenUtilInit]
   ResponsiveScreenUtilInit({
     required this.child,
     this.designSize = ResponsiveScreenUtil.defaultSize,

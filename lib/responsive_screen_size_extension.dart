@@ -20,11 +20,9 @@ extension SizeExtension on double {
   ///[ResponsiveScreenUtil.setSp]
   double get nsp => ResponsiveScreenUtil().setSp(this, allowFontScalingSelf: false);
 
-  ///屏幕宽度的倍数
   ///Multiple of screen width
   double get sw => ResponsiveScreenUtil().screenWidth * this;
 
-  ///屏幕高度的倍数
   ///Multiple of screen height
   double get sh => ResponsiveScreenUtil().screenHeight * this;
 
