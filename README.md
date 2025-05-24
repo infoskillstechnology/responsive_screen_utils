@@ -18,7 +18,7 @@ dependencies:
   flutter:
     sdk: flutter
   # add responsive_screen_utils
-  responsive_screen_utils: ^{latest version}
+  responsive_screen_utils: ^0.0.3
 ```
 ### Add the following imports to your Dart code:
 ```dart
@@ -33,7 +33,8 @@ import 'package:responsive_screen_utils/responsive_screen_utils.dart';
 |allowFontScaling|bool|false|Sets whether the font size is scaled according to the system's "font size" assist option|
 
 ### Initialize and set the fit size and font size to scale according to the system's "font size" accessibility option
-Please set the size of the design draft before use, the width and height of the design draft.
+
+Please set the size of the design draft before use, the width and height of the design draft. This is typically done at the root of your application.
 
 ```dart
 void main() => runApp(MyApp());
@@ -41,12 +42,108 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //Set the fit size (fill in the screen size of the device in the design,in dp)
+    //Set the fit size (e.g., the screen size of the device in the design draft, in dp)
+    //Default is Size(360, 690)
     return ResponsiveScreenUtilInit(
-      designSize: Size(360, 690),
-      allowFontScaling: false,
-      child: MaterialApp(
-        ...
+      designSize: Size(375, 812), // Example: iPhone X dimensions
+      allowFontScaling: true, // Allows font scaling based on system settings
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'Responsive App',
+          home: MyHomePage(),
+          // It's good practice to ensure the child of ResponsiveScreenUtilInit is used.
+          // If you have a builder, ensure it returns the child or incorporates it.
+        );
+      },
+      // If you don't need a builder, you can directly pass the child widget.
+      // child: MaterialApp(
+      //   title: 'Responsive App',
+      //   home: MyHomePage(),
+      // ),
+    );
+  }
+}
+```
+
+**Explanation of `ResponsiveScreenUtilInit` properties:**
+
+*   `designSize`: This is the `Size` (width, height) of the screen that your UI was designed for. For example, if your designer provided mockups for an iPhone X, you might use `Size(375, 812)`.
+*   `allowFontScaling`: If set to `true`, font sizes will scale according to the user's system-level text size settings. If `false`, font sizes will be fixed based on your design.
+*   `builder`: An optional builder function that provides `context` and `child`. This is useful if you need to access `BuildContext` immediately within the `MaterialApp` or similar root widget. If you don't need a builder, you can directly provide a `child` widget.
+
+### How it Works
+
+The library calculates scaling factors based on the `designSize` you provide and the actual screen size of the device it's running on. It then provides extension methods and utility functions to convert your design dimensions (in dp) and font sizes (in sp) into dimensions that are appropriate for the current device's screen.
+
+**Core Concepts:**
+
+*   **`.w` (width extension):** Scales a number based on the screen width. `100.w` means a width that occupies the same proportion of the screen as 100dp would on your design screen width.
+*   **`.h` (height extension):** Scales a number based on the screen height. `100.h` means a height that occupies the same proportion of the screen as 100dp would on your design screen height.
+*   **`.r` (radius/adaptive extension):** Scales a number based on the smaller of the width or height scaling factors. This is useful for creating elements like circles or squares that should maintain their aspect ratio and scale proportionally.
+*   **`.sp` (scalable pixel for fonts):** Scales font sizes. If `allowFontScaling` (globally or locally) is true, it also considers the system's text scaling factor.
+*   **`.sw` (screen width fraction):** `1.sw` is the full screen width. `0.5.sw` is 50% of the screen width.
+*   **`.sh` (screen height fraction):** `1.sh` is the full screen height. `0.5.sh` is 50% of the screen height.
+
+**Example: Creating a Responsive Widget**
+
+Let's say your design has a container that is 150dp wide and 100dp high, with a text font size of 16sp.
+
+```dart
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Responsive Demo'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 150.w, // Adapts to screen width
+              height: 100.h, // Adapts to screen height
+              color: Colors.blue,
+              alignment: Alignment.center,
+              child: Text(
+                'Responsive Box',
+                style: TextStyle(
+                  fontSize: 16.sp, // Adapts font size
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(height: 20.h), // Responsive spacing
+            Container(
+              width: 200.r, // Adapts using the smaller scale factor (width or height)
+              height: 200.r, // Ensures it's a square that scales proportionally
+              color: Colors.green,
+              alignment: Alignment.center,
+              child: Text(
+                'Adaptive Square (200.r)',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14.ssp, // Font scales with system settings
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Text(
+              'Screen Width: ${1.sw.toStringAsFixed(2)}dp (${ResponsiveScreenUtil().screenWidth.toStringAsFixed(2)} physical pixels)',
+            ),
+            Text(
+              'Screen Height: ${1.sh.toStringAsFixed(2)}dp (${ResponsiveScreenUtil().screenHeight.toStringAsFixed(2)} physical pixels)',
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              child: Text(
+                'This text has responsive padding.',
+                style: TextStyle(fontSize: 12.nsp), // Font does NOT scale with system settings
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -64,8 +161,8 @@ class MyApp extends StatelessWidget {
     ResponsiveScreenUtil().setHeight(200.0) (dart sdk>=2.6 : 200.h) //Adapted to screen height , under normal circumstances, the height still uses x.w
     ResponsiveScreenUtil().radius(200.0) (dart sdk>=2.6 : 200.r)    //Adapt according to the smaller of width or height
     ResponsiveScreenUtil().setSp(24.0)      (dart sdk>=2.6 : 24.sp) //Adapter font
-    ResponsiveScreenUtil().setSp(24.0, allowFontScalingSelf: true)  (dart sdk>=2.6 : 24.ssp) //Adapter font(fonts will scale to respect Text Size accessibility settings)
-    ResponsiveScreenUtil().setSp(24.0, allowFontScalingSelf: false) (dart sdk>=2.6 : 24.nsp) //Adapter font(fonts will not scale to respect Text Size accessibility settings)
+    ResponsiveScreenUtil().setSp(24.0, allowFontScalingSelf: true)  (dart sdk>=2.6 : 24.ssp) //Adapter font (font size will scale to respect Text Size accessibility settings if `allowFontScaling` in `ResponsiveScreenUtil.init` is true OR `allowFontScalingSelf` is true)
+    ResponsiveScreenUtil().setSp(24.0, allowFontScalingSelf: false) (dart sdk>=2.6 : 24.nsp) //Adapter font (font size will NOT scale to respect Text Size accessibility settings, overriding global `allowFontScaling`)
 
     ResponsiveScreenUtil().pixelRatio       //Device pixel density
     ResponsiveScreenUtil().screenWidth   (dart sdk>=2.6 : 1.sw)    //Device width
@@ -111,9 +208,9 @@ height:200.h
 
 The height can also use setWidth to ensure that it is not deformed(when you want a square)
 
-The setHeight method is mainly to adapt to the height, which is used when you want to control the height of a screen on the UI to be the same as the actual display.
+The `setHeight` method (or `.h` extension) is mainly to adapt to the height. This is useful when you want a UI element to occupy a specific proportion of the screen height, regardless of the width.
 
-Generally speaking, 50.w!=50.h.
+Generally speaking, `50.w` might not be equal to `50.h` in terms of actual pixel values if the screen aspect ratio is different from your design's aspect ratio. Use `.r` for elements that need to scale uniformly (e.g., circles, squares that must remain square).
 
 ```dart
 //for example:

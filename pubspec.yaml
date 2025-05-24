@@ -1,10 +1,10 @@
 name: responsive_screen_utils
 description: A flutter plugin for adapting screen, dynamic width and height and font size.Let your UI display a reasonable layout on different screen sizes!
-version: 0.0.2
+version: 0.0.4
 homepage: https://github.com/infoskillstechnology/responsive_screen_utils.git
 
 environment:
-  sdk: '>=2.12.0-29.10.beta <3.0.0'
+  sdk: '>=2.12.0-29.10.beta <4.0.0'
 #  flutter: ">=1.17.0"
 
 dependencies:
